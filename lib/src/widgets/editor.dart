@@ -1343,6 +1343,12 @@ class RawEditorState extends EditorState
 
   @override
   bool get shareEnabled => true;
+
+  @override
+  bool onFocusReceived() {
+    // TODO: implement onFocusReceived
+    throw UnimplementedError();
+  }
 }
 
 class _Editor extends MultiChildRenderObjectWidget {
