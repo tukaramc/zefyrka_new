@@ -83,7 +83,7 @@ class CursorStyle {
   });
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other is! CursorStyle) return false;
     return other.color == color &&
@@ -214,7 +214,7 @@ class CursorController extends ChangeNotifier {
 
   void _onCursorColorTick() {
     _cursorColor.value =
-        _style.color.withOpacity(_cursorBlinkOpacityController.value);
+        _style.color.withValues(alpha: _cursorBlinkOpacityController.value);
     cursorBlink.value =
         showCursor.value && _cursorBlinkOpacityController.value > 0;
   }
@@ -228,24 +228,7 @@ class FloatingCursorController {
     _floatingCursorResetController.addListener(_onFloatingCursorResetTick);
   }
 
-  // The time it takes for the floating cursor to snap to the text aligned
-  // cursor position after the user has finished placing it.
-  static const Duration _floatingCursorResetTime = Duration(milliseconds: 125);
-
   late AnimationController _floatingCursorResetController;
-
-  // The original position of the caret on FloatingCursorDragState.start.
-  Rect? _startCaretRect;
-
-  // The most recent text position as determined by the location of the floating
-  // cursor.
-  TextPosition? _lastTextPosition;
-
-  // The offset of the floating cursor as determined from the first update call.
-  Offset? _pointOffsetOrigin;
-
-  // The most recent position of the floating cursor.
-  Offset? _lastBoundedOffset;
 
   // Because the center of the cursor is preferredLineHeight / 2 below the touch
   // origin, but the touch origin is used to determine which line the cursor is

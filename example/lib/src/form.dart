@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:zefyrka/zefyrka.dart';
 
 import 'full_page.dart';

@@ -1,5 +1,5 @@
 import 'package:adaptive_breakpoints/adaptive_breakpoints.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Returns a boolean if we are on a medium or larger screen. Used to
 /// build adaptive and responsive layouts.

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:notus_format/notus_format.dart';
 
 import 'editable_text_line.dart';
@@ -48,7 +48,7 @@ class TextLine extends StatelessWidget {
         textAlign: textAlign,
         textDirection: textDirection,
         strutStyle: strutStyle,
-        textScaleFactor: MediaQuery.textScaleFactorOf(context),
+        textScaler: MediaQuery.textScalerOf(context),
       ),
     );
   }

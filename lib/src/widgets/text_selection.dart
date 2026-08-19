@@ -10,7 +10,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -345,6 +345,7 @@ class EditorTextSelectionOverlay {
         link: toolbarLayerLink,
         showWhenUnlinked: false,
         offset: -editingRegion.topLeft,
+        // ignore: deprecated_member_use
         child: selectionControls!.buildToolbar(
           context,
           editingRegion,
@@ -420,8 +421,6 @@ class _TextSelectionHandleOverlay extends StatefulWidget {
 class _TextSelectionHandleOverlayState
     extends State<_TextSelectionHandleOverlay>
     with SingleTickerProviderStateMixin {
-  late Offset _dragPosition;
-
   late AnimationController _controller;
 
   Animation<double> get _opacity => _controller.view;
@@ -465,12 +464,10 @@ class _TextSelectionHandleOverlayState
         ? widget.selection.base
         : widget.selection.extent;
     final lineHeight = widget.renderObject!.preferredLineHeight(textPosition);
-    final Size handleSize = widget.selectionControls!.getHandleSize(lineHeight);
-    _dragPosition = details.globalPosition + Offset(0.0, -handleSize.height);
+    widget.selectionControls!.getHandleSize(lineHeight);
   }
 
   void _handleDragUpdate(DragUpdateDetails details) {
-    _dragPosition += details.delta;
     final TextPosition position =
         widget.renderObject!.getPositionForOffset(details.globalPosition);
     if (widget.selection.isCollapsed) {
@@ -1302,34 +1299,5 @@ class _EditorTextSelectionGestureDetectorState
       behavior: widget.behavior,
       child: widget.child,
     );
-  }
-}
-
-// A TapGestureRecognizer which allows other GestureRecognizers to win in the
-// GestureArena. This means both _TransparentTapGestureRecognizer and other
-// GestureRecognizers can handle the same event.
-//
-// This enables proper handling of events on both the selection handle and the
-// underlying input, since there is significant overlap between the two given
-// the handle's padded hit area.  For example, the selection handle needs to
-// handle single taps on itself, but double taps need to be handled by the
-// underlying input.
-class _TransparentTapGestureRecognizer extends TapGestureRecognizer {
-  _TransparentTapGestureRecognizer({
-    Object? debugOwner,
-  }) : super(debugOwner: debugOwner);
-
-  @override
-  void rejectGesture(int pointer) {
-    // Accept new gestures that another recognizer has already won.
-    // Specifically, this needs to accept taps on the text selection handle on
-    // behalf of the text field in order to handle double tap to select. It must
-    // not accept other gestures like longpresses and drags that end outside of
-    // the text field.
-    if (state == GestureRecognizerState.ready) {
-      acceptGesture(pointer);
-    } else {
-      super.rejectGesture(pointer);
-    }
   }
 }

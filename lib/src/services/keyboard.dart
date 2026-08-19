@@ -1,9 +1,9 @@
 // ignore_for_file: omit_local_variable_types
 // ignore_for_file: curly_braces_in_flow_control_structures
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 
 enum CursorMovement { left, right, up, down }
 
@@ -73,20 +73,22 @@ class KeyboardListener {
     required this.onDelete,
   });
 
-  KeyEventResult handleKeyEvent(RawKeyEvent keyEvent) {
+  KeyEventResult handleKeyEvent(KeyEvent keyEvent) {
     if (kIsWeb) {
       // On web platform, we should ignore the key because it's processed already.
       return KeyEventResult.skipRemainingHandlers;
     }
 
-    if (keyEvent is! RawKeyDownEvent)
+    if (keyEvent is! KeyDownEvent) {
       return KeyEventResult.skipRemainingHandlers;
+    }
 
     final Set<LogicalKeyboardKey> keysPressed =
-        LogicalKeyboardKey.collapseSynonyms(RawKeyboard.instance.keysPressed);
+        HardwareKeyboard.instance.logicalKeysPressed;
     final LogicalKeyboardKey key = keyEvent.logicalKey;
 
-    final bool isMacOS = keyEvent.data is RawKeyEventDataMacOs;
+    final bool isMacOS = defaultTargetPlatform == TargetPlatform.macOS ||
+        defaultTargetPlatform == TargetPlatform.iOS;
     if (!_nonModifierKeys.contains(key) ||
         keysPressed
                 .difference(isMacOS ? _macOsModifierKeys : _modifierKeys)
@@ -100,17 +102,20 @@ class KeyboardListener {
       return KeyEventResult.ignored;
     }
 
-    final bool isWordModifierPressed =
-        isMacOS ? keyEvent.isAltPressed : keyEvent.isControlPressed;
-    final bool isLineModifierPressed =
-        isMacOS ? keyEvent.isMetaPressed : keyEvent.isAltPressed;
-    final bool isShortcutModifierPressed =
-        isMacOS ? keyEvent.isMetaPressed : keyEvent.isControlPressed;
+    final bool isWordModifierPressed = isMacOS
+        ? HardwareKeyboard.instance.isAltPressed
+        : HardwareKeyboard.instance.isControlPressed;
+    final bool isLineModifierPressed = isMacOS
+        ? HardwareKeyboard.instance.isMetaPressed
+        : HardwareKeyboard.instance.isAltPressed;
+    final bool isShortcutModifierPressed = isMacOS
+        ? HardwareKeyboard.instance.isMetaPressed
+        : HardwareKeyboard.instance.isControlPressed;
     if (_movementKeys.contains(key)) {
       onCursorMovement(key,
           wordModifier: isWordModifierPressed,
           lineModifier: isLineModifierPressed,
-          shift: keyEvent.isShiftPressed);
+          shift: HardwareKeyboard.instance.isShiftPressed);
     } else if (isShortcutModifierPressed && _shortcutKeys.contains(key)) {
       final _keyToShortcut = {
         LogicalKeyboardKey.keyX: InputShortcut.cut,

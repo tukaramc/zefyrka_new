@@ -9,7 +9,7 @@ class RichTextProxy extends SingleChildRenderObjectWidget {
     required this.textStyle,
     required this.textAlign,
     required this.textDirection,
-    this.textScaleFactor = 1.0,
+    this.textScaler = const TextScaler.linear(1.0),
     required this.locale,
     required this.strutStyle,
     this.textWidthBasis = TextWidthBasis.parent,
@@ -19,7 +19,7 @@ class RichTextProxy extends SingleChildRenderObjectWidget {
   final TextStyle? textStyle;
   final TextAlign textAlign;
   final TextDirection? textDirection;
-  final double textScaleFactor;
+  final TextScaler textScaler;
   final Locale locale;
   final StrutStyle strutStyle;
   final TextWidthBasis textWidthBasis;
@@ -31,7 +31,7 @@ class RichTextProxy extends SingleChildRenderObjectWidget {
       textStyle: textStyle,
       textAlign: textAlign,
       textDirection: textDirection,
-      textScaleFactor: textScaleFactor,
+      textScaler: textScaler,
       locale: locale,
       strutStyle: strutStyle,
       textWidthBasis: textWidthBasis,
@@ -45,7 +45,7 @@ class RichTextProxy extends SingleChildRenderObjectWidget {
     renderObject.textStyle = textStyle!;
     renderObject.textAlign = textAlign;
     renderObject.textDirection = textDirection!;
-    renderObject.textScaleFactor = textScaleFactor;
+    renderObject.textScaler = textScaler;
     renderObject.locale = locale;
     renderObject.strutStyle = strutStyle;
     renderObject.textWidthBasis = textWidthBasis;

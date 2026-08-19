@@ -11,7 +11,7 @@ class RenderParagraphProxy extends RenderProxyBox
     required TextStyle? textStyle,
     required TextAlign textAlign,
     required TextDirection? textDirection,
-    required double textScaleFactor,
+    required TextScaler textScaler,
     required StrutStyle strutStyle,
     required Locale locale,
     required TextWidthBasis textWidthBasis,
@@ -20,7 +20,7 @@ class RenderParagraphProxy extends RenderProxyBox
             text: TextSpan(text: ' ', style: textStyle),
             textAlign: textAlign,
             textDirection: textDirection,
-            textScaleFactor: textScaleFactor,
+            textScaler: textScaler,
             strutStyle: strutStyle,
             locale: locale,
             textWidthBasis: textWidthBasis,
@@ -47,9 +47,9 @@ class RenderParagraphProxy extends RenderProxyBox
     markNeedsLayout();
   }
 
-  set textScaleFactor(double value) {
-    if (_prototypePainter.textScaleFactor == value) return;
-    _prototypePainter.textScaleFactor = value;
+  set textScaler(TextScaler value) {
+    if (_prototypePainter.textScaler == value) return;
+    _prototypePainter.textScaler = value;
     markNeedsLayout();
   }
 

@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -279,7 +279,7 @@ class _ZefyrEditorState extends State<ZefyrEditor>
         cursorColor ??=
             selectionTheme.cursorColor ?? cupertinoTheme.primaryColor;
         selectionColor = selectionTheme.selectionColor ??
-            cupertinoTheme.primaryColor.withOpacity(0.40);
+            cupertinoTheme.primaryColor.withValues(alpha: 0.40);
         cursorRadius ??= const Radius.circular(2.0);
         cursorOffset = Offset(
             iOSHorizontalOffset / MediaQuery.of(context).devicePixelRatio, 0);
@@ -294,7 +294,7 @@ class _ZefyrEditorState extends State<ZefyrEditor>
         cursorOpacityAnimates = false;
         cursorColor ??= selectionTheme.cursorColor ?? theme.colorScheme.primary;
         selectionColor = selectionTheme.selectionColor ??
-            theme.colorScheme.primary.withOpacity(0.40);
+            theme.colorScheme.primary.withValues(alpha: 0.40);
         break;
     }
 
@@ -494,6 +494,7 @@ class RawEditor extends StatefulWidget {
     this.onLaunchUrl,
     required this.selectionColor,
     this.scrollPhysics,
+    // ignore: deprecated_member_use
     this.toolbarOptions = const ToolbarOptions(
       copy: true,
       cut: true,
@@ -552,6 +553,7 @@ class RawEditor extends StatefulWidget {
   ///
   /// By default, all options are enabled. If [readOnly] is true,
   /// paste and cut will be disabled regardless.
+  // ignore: deprecated_member_use
   final ToolbarOptions toolbarOptions;
 
   /// Whether to show selection handles.
@@ -727,7 +729,6 @@ class RawEditorState extends EditorState
 
   // Cursors
   CursorController? _cursorController;
-  FloatingCursorController? _floatingCursorController;
 
   // Keyboard
   late keyboard.KeyboardListener _keyboardListener;
@@ -843,7 +844,7 @@ class RawEditorState extends EditorState
 
     // Focus
     _focusAttachment = widget.focusNode.attach(context,
-        onKey: (node, event) => _keyboardListener.handleKeyEvent(event));
+        onKeyEvent: (node, event) => _keyboardListener.handleKeyEvent(event));
     widget.focusNode.addListener(_handleFocusChanged);
   }
 
@@ -891,7 +892,7 @@ class RawEditorState extends EditorState
       oldWidget.focusNode.removeListener(_handleFocusChanged);
       _focusAttachment?.detach();
       _focusAttachment = widget.focusNode.attach(context,
-          onKey: (node, event) => _keyboardListener.handleKeyEvent(event));
+          onKeyEvent: (node, event) => _keyboardListener.handleKeyEvent(event));
       widget.focusNode.addListener(_handleFocusChanged);
       updateKeepAlive();
     }

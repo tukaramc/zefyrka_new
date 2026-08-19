@@ -1,14 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:notus_format/notus_format.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:zefyrka/zefyrka.dart';
 
 import '../rendering/editable_text_block.dart';
-import 'cursor.dart';
 import 'editable_text_line.dart';
-import 'editor.dart';
-import 'text_line.dart';
-import 'theme.dart';
 
 typedef CheckboxListener = void Function(int documentOffset, bool checked);
 
@@ -126,8 +120,9 @@ class EditableTextBlock extends StatelessWidget {
       return _NumberPoint(
         index: index,
         count: count,
-        style: theme!.code.style
-            .copyWith(color: theme.code.style.color!.withOpacity(0.4)),
+        style: theme!.code.style.copyWith(
+          color: theme.code.style.color!.withValues(alpha: 0.4),
+        ),
         width: 32.0,
         padding: 16.0,
         withDot: false,
