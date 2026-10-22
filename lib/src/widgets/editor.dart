@@ -896,7 +896,6 @@ class RawEditorState extends EditorState
       widget.focusNode.addListener(_handleFocusChanged);
       updateKeepAlive();
     }
-
     if (widget.controller.selection != oldWidget.controller.selection) {
       _selectionOverlay?.update(textEditingValue);
     }
